@@ -5,4 +5,4 @@ const articleSchema = {
     content: String,
 }
 
-module.exports = mongoose.Schema("article", articleSchema);
+module.exports = mongoose.model("article", articleSchema);
