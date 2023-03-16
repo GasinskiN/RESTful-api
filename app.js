@@ -14,7 +14,9 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(express.static(__dirname + "/public"));
 
-app.get("/articles", async function(req, res){
+
+app.route("/articles")
+.get(async function(req, res){
     try {
         const allArticles = await Article.find(); 
         res.send(allArticles);
@@ -23,27 +25,27 @@ app.get("/articles", async function(req, res){
     }
 })
 
-app.post("/articles", async function(req, res){
+.post(async function(req, res){
     try {
         const newArticle = await Article.create({
             title: req.body.title,
             content: req.body.content,
-            
         });
         res.send("Succesfully added an article");
     } catch (error) {
-        console.log(error.message);
+        res.send(error.message);
     }
 })
 
-app.delete("/articles", async function(req, res){
+.delete(async function(req, res){
     try {
         await Article.deleteMany();
-        console.log("Succesfully deleted all articles");
+        res.send("Succesfully deleted all articles");
     } catch (error) {
-        console.log(error.message);
+        res.send(error.message);
     }
-})
+});
+
 
 app.listen(3000, function(){
     console.log("Server running on port 3000");
