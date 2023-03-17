@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended: true}));
 
 app.use(express.static(__dirname + "/public"));
 
-
+// Requests for all articles
 app.route("/articles")
 .get(async function(req, res){
     try {
@@ -46,6 +46,31 @@ app.route("/articles")
     }
 });
 
+
+// requests for a specific article
+
+app.route("/articles/:articleTitle")
+
+.get(async function(req, res){
+    try {
+        const specificArticle = await Article.findOne({title: req.params.articleTitle});
+        res.send(specificArticle);
+    } catch (error) {
+        res.send(error.message);
+    }
+
+})
+
+.put(async function(req, res){
+    try {
+        const mongodbResponse = await Article.replaceOne(
+            {title: req.params.articleTitle},
+            {title: req.body.title, content: req.body.content});
+            res.send(mongodbResponse.acknowledged);
+    } catch (error) {
+        res.send(mongodbResponse.acknowledged);
+    }
+});
 
 app.listen(3000, function(){
     console.log("Server running on port 3000");
