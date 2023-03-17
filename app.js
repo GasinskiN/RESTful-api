@@ -82,6 +82,15 @@ app.route("/articles/:articleTitle")
     } catch (error) {
         res.send(error.message);
     }
+})
+
+.delete(async function(req, res){
+    try {
+        const mongodbResponse = await Article.deleteOne({title: req.params.articleTitle});
+        res.send(mongodbResponse.acknowledged);
+    } catch (error) {
+        res.send(error.message);
+    }
 });
 
 app.listen(3000, function(){
