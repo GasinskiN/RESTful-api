@@ -68,7 +68,19 @@ app.route("/articles/:articleTitle")
             {title: req.body.title, content: req.body.content});
             res.send(mongodbResponse.acknowledged);
     } catch (error) {
-        res.send(mongodbResponse.acknowledged);
+        res.send(error.message);
+    }
+})
+
+.patch(async function(req, res){
+    try {
+        const mongodbResponse = await Article.updateOne(
+            {title: req.params.articleTitle},
+            {$set: req.body}
+        );
+        res.send(mongodbResponse.acknowledged)
+    } catch (error) {
+        res.send(error.message);
     }
 });
 
